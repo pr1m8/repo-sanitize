@@ -4,5 +4,5 @@ sphinx-rtd-theme
 furo
 sphinx-copybutton
 myst-parser
-sphinxcontrib-autodoc-pydantic
+
 python-dotenv
