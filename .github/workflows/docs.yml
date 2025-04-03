@@ -9,16 +9,31 @@ on:
 jobs:
   build-docs:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
-      - name: Build documentation
+
+      - name: 🛠️ Install Poetry
+        run: |
+          pip install poetry
+          poetry config virtualenvs.create false
+
+      - name: 📦 Install dependencies
+        run: poetry install --with dev
+
+      - name: 🧱 Build Sphinx documentation
         run: |
           cd docs
-          poetry run sphinx-build -b html source build/html
+          sphinx-build -b html source build/html
+
+      - name: 📤 Upload HTML docs as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sphinx-html
+          path: docs/build/html
